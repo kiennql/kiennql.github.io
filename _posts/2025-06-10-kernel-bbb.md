@@ -114,9 +114,6 @@ Boot kernel:
 => bootz 0x80200000 - 0x80f00000
 ```
 
-![Kernel Boot Output](/assets/img/post/kernel-bbb/)
-_Output khi kernel boot lên trên BeagleBone Black_
-
 Bạn sẽ thấy kernel boot và cuối cùng gặp kernel panic về việc không tìm thấy root filesystem. Điều này là bình thường vì chúng ta chưa tạo root filesystem.
 
 **Tự động hóa quá trình boot:**
