@@ -3,7 +3,7 @@ title: OP-TEE - Môi trường & Gỡ lỗi (Phần 1)
 author: kiennql
 date: 2025-06-12 16:34:00 +0700
 categories: [optee-labs]
-tags: [op-tee, arm trustzone, secure world, qemu, debugging, gdb, cross-compile]
+tags: [op-tee, arm trustzone, secure world, qemu, debugging, gdb, cross-compile, arm, repo, gdb-multiarch, embedded linux]
 math: true
 mermaid: true
 render_with_liquid: false
