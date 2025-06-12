@@ -92,7 +92,7 @@ Khởi động minicom:
 minicom -D /dev/ttyUSB0 -b 115200
 ```
 
-Boot BeagleBone từ SD card (giữ nút boot khi cấp nguồn).
+Boot BeagleBone từ SD card (giữ nút Reset button khi cấp nguồn).
 
 Tại prompt U-Boot `=>`, thiết lập boot arguments:
 
