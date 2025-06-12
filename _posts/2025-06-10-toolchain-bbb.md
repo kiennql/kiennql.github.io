@@ -3,7 +3,7 @@ title: Tạo toolchain cho BeagleBone Black bằng crosstool-NG (Phần 1)
 author: kiennql
 date: 2025-06-10 0:33:00 +0700
 categories: [bbb-labs]
-tags: [beaglebone black, embedded linux, crosstool-ng, uclibc, toolchain, arm]
+tags: [beaglebone black, embedded linux, crosstool-ng, uclibc, toolchain, arm, cross-compile]
 math: true
 mermaid: true
 render_with_liquid: false
@@ -79,7 +79,7 @@ Chúng ta chọn cortex a8, vậy:
 
 Menuconfig sẽ trông như thế này:
 
-![](/assets/img/post/toolchainbbb/605516D5-ADDC-47FF-BEA1-65F18920137C.png)
+![](/assets/img/post/toolchain-bbb/605516D5-ADDC-47FF-BEA1-65F18920137C.png)
 
 Cấu hình toolchain như sau:
 
@@ -122,7 +122,7 @@ Bây giờ nó đã được build, bạn nên thêm `$HOME/x-tools/arm-training
 
 Log khi build thành công sẽ như thế này:
 
-![](/assets/img/post/toolchainbbb/3B20CE99-590F-49DD-9AD4-2E80FEE12852.png)
+![](/assets/img/post/toolchain-bbb/3B20CE99-590F-49DD-9AD4-2E80FEE12852.png)
 
 ## 5. Xác nhận toolchain hoạt động
 
