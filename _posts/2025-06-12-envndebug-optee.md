@@ -1,5 +1,5 @@
 ---
-title: OP-TEE - Môi trường & Gỡ lỗi (Phần 1)
+title: "OP-TEE: Môi trường & Gỡ lỗi (Phần 1)"
 author: kiennql
 date: 2025-06-12 16:34:00 +0700
 categories: [optee-labs]

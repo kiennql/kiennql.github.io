@@ -1,5 +1,5 @@
 ---
-title: OP-TEE - Phân tích quy trình gọi từ CA đến TA (Phần 2)
+title: "OP-TEE: Phân tích quy trình gọi từ CA đến TA (Phần 2)"
 author: kiennql
 date: 2025-06-19 14:32:00 +0700
 categories: [optee-labs]

@@ -1,8 +1,8 @@
 ---
-title: "F2FS: Hệ thống tập tin mới cho Flash Storage"
+title: "F2FS: Hệ thống tập tin mới cho Flash Storage (Phần 1)"
 author: kiennql
 date: 2025-06-20 09:19:00 +0700
-categories: [paper]
+categories: [paper, kernel]
 tags: [f2fs, flash storage, filesystem, paper review, linux, ssd, nand flash, ftl]
 math: true
 mermaid: true

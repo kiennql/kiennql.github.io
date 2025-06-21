@@ -1,5 +1,5 @@
 ---
-title: Bootloader Security - Các lỗ hổng bảo mật và kỹ thuật tấn công
+title: "Bootloader Security: Các lỗ hổng bảo mật và kỹ thuật tấn công"
 author: kiennql
 date: 2025-06-19 14:14:00 +0700
 categories: [bootloader-labs]

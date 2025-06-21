@@ -1,5 +1,5 @@
 ---
-title: Viết Bootloader đầu tiên cho kiến trúc x86
+title: "Bootloader: Viết Bootloader đầu tiên cho kiến trúc x86"
 author: kiennql
 date: 2025-06-19 13:39:00 +0700
 categories: [bootloader-labs]
