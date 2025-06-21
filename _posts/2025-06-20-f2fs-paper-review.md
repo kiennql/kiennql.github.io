@@ -64,7 +64,7 @@ Bổ sung một số giải thích về bố cục đĩa cứng, phần sau đâ
 
 ---
 
-Ở đây có một câu hỏi: tại sao cần phân chia ba cấp (zone-section-segment)? Hiểu biết cá nhân của tôi là zone được đưa vào là xem xét đến đơn vị hỗ trợ FTL nhận diện dữ liệu nóng lạnh (xem phần [Multi-head logging](#7-multi-head-logging) bên dưới); còn section thì là một đơn vị được chọn khi GC hệ thống tập tin (performs "cleaning" in the unit of section. …identify a victim selection, xem phần [Cleaning](#8-cleaning) bên dưới); còn segment là đơn vị quản lý cơ bản (allocates storage blocks in the unit of segments), điều này có thể là do F2FS vẫn là hệ thống tập tin thiết bị khối để thích ứng; việc chọn kích thước của cả ba đơn vị này đều cần xem xét đặc điểm phần cứng FTL.
+Ở đây có một câu hỏi: tại sao cần phân chia ba cấp (zone-section-segment)? Hiểu biết cá nhân của tôi là zone được đưa vào là xem xét đến đơn vị hỗ trợ FTL nhận diện dữ liệu nóng lạnh (xem phần [Multi-head logging](#6-multi-head-logging) bên dưới); còn section thì là một đơn vị được chọn khi GC hệ thống tập tin (performs "cleaning" in the unit of section. …identify a victim selection, xem phần [Cleaning](#7-cleaning) bên dưới); còn segment là đơn vị quản lý cơ bản (allocates storage blocks in the unit of segments), điều này có thể là do F2FS vẫn là hệ thống tập tin thiết bị khối để thích ứng; việc chọn kích thước của cả ba đơn vị này đều cần xem xét đặc điểm phần cứng FTL.
 
 ## 5. Index structure
 
