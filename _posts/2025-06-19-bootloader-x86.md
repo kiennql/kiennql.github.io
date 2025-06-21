@@ -9,27 +9,9 @@ mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Quá trình khởi động máy tính](#2-quá-trình-khởi-động-máy-tính)
-  - [2.1. Power Supply Unit (PSU)](#21-power-supply-unit-psu)
-  - [2.2. Power On Self Test (POST)](#22-power-on-self-test-post)
-  - [2.3. BIOS và Interrupt Vector Table](#23-bios-và-interrupt-vector-table)
-  - [2.4. Boot Sector](#24-boot-sector)
-- [3. Chuẩn bị môi trường](#3-chuẩn-bị-môi-trường)
-- [4. Viết Bootloader đầu tiên](#4-viết-bootloader-đầu-tiên)
-  - [4.1. Source code](#41-source-code)
-  - [4.2. Giải thích từng dòng code](#42-giải-thích-từng-dòng-code)
-- [5. Build và test Bootloader](#5-build-và-test-bootloader)
-  - [5.1. Assemble code](#51-assemble-code)
-  - [5.2. Tạo floppy image](#52-tạo-floppy-image)
-  - [5.3. Chạy trên QEMU](#53-chạy-trên-qemu)
+## 1. Quá trình khởi động máy tính
 
-Bài viết này sẽ hướng dẫn bạn hiểu quá trình khởi động máy tính và viết bootloader đầu tiên cho kiến trúc x86.
-
-## 2. Quá trình khởi động máy tính
-
-### 2.1. Power Supply Unit (PSU)
+### 1.1. Power Supply Unit (PSU)
 
 Máy tính của chúng ta khởi động như thế nào? Chắc hẳn nhiều bạn từng tự hỏi điều gì thực sự xảy ra khi ta nhấn nút nguồn.
 
@@ -40,7 +22,7 @@ Có một thành phần gọi là **PSU (Power Supply Unit)** trong phần cứn
 3. Cung cấp năng lượng cho các bộ phận khác của hệ thống
 4. Gửi tín hiệu **'power-good'** đến BIOS khi điện áp ổn định
 
-### 2.2. Power On Self Test (POST)
+### 1.2. Power On Self Test (POST)
 
 Khi nhận được tín hiệu 'power-good', BIOS bắt đầu quá trình **POST (Power On Self Test)**:
 
@@ -49,7 +31,7 @@ Khi nhận được tín hiệu 'power-good', BIOS bắt đầu quá trình **PO
 - Phát hiện các thiết bị đang được kết nối
 - Báo lỗi bằng mã số trên I/O port hoặc chuỗi tiếng bíp nếu có vấn đề
 
-### 2.3. BIOS và Interrupt Vector Table
+### 1.3. BIOS và Interrupt Vector Table
 
 Sau khi POST hoàn tất, quyền điều khiển được chuyển đến **BIOS**:
 
@@ -57,7 +39,7 @@ Sau khi POST hoàn tất, quyền điều khiển được chuyển đến **BIO
 2. IVT lưu trữ địa chỉ của các Interrupt Service Routines
 3. Interrupt là cơ chế phần cứng sử dụng để báo hiệu sự kiện cho CPU
 
-### 2.4. Boot Sector
+### 1.4. Boot Sector
 
 Công việc chính của BIOS là tải **bootloader**. Nhưng làm sao biết nó nằm ở đâu?
 
@@ -66,7 +48,7 @@ Công việc chính của BIOS là tải **bootloader**. Nhưng làm sao biết 
 - BIOS load dữ liệu từ boot sector vào bộ nhớ tại địa chỉ **0x7c00**
 - Sử dụng ngắt **0x19** để nhảy đến địa chỉ này
 
-## 3. Chuẩn bị môi trường
+## 2. Chuẩn bị môi trường
 
 Chúng ta cần cài đặt các công cụ cần thiết:
 
@@ -77,9 +59,9 @@ sudo apt-get install nasm qemu-system-x86
 - **NASM**: Assembler cho Intel x86 architecture
 - **QEMU**: Trình giả lập để test bootloader
 
-## 4. Viết Bootloader đầu tiên
+## 3. Viết Bootloader đầu tiên
 
-### 4.1. Source code
+### 3.1. Source code
 
 Tạo file `myboot.asm`:
 
@@ -95,7 +77,7 @@ Start:
     dw 0xAA55
 ```
 
-### 4.2. Giải thích từng dòng code
+### 3.2. Giải thích từng dòng code
 
 **`org 0x7c00`**
 - Bootloader được load vào bộ nhớ tại địa chỉ 0x7c00
@@ -122,9 +104,9 @@ Start:
 - `0xAA` tại byte 511, `0x55` tại byte 512
 - Cho BIOS biết sector này có thể boot được
 
-## 5. Build và test Bootloader
+## 4. Build và test Bootloader
 
-### 5.1. Assemble code
+### 4.1. Assemble code
 
 Chuyển đổi assembly code sang machine code:
 
@@ -132,7 +114,7 @@ Chuyển đổi assembly code sang machine code:
 nasm -f bin -o myboot.bin myboot.asm
 ```
 
-### 5.2. Tạo floppy image
+### 4.2. Tạo floppy image
 
 Sao chép bootloader vào sector đầu tiên của floppy image:
 
@@ -140,7 +122,7 @@ Sao chép bootloader vào sector đầu tiên của floppy image:
 dd status=noxfer conv=notrunc if=myboot.bin of=myboot.flp
 ```
 
-### 5.3. Chạy trên QEMU
+### 4.3. Chạy trên QEMU
 
 Khởi động bootloader đầu tiên của bạn:
 

@@ -9,18 +9,7 @@ mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Build System là gì?](#2-build-system-là-gì)
-- [3. Cài đặt Buildroot](#3-cài-đặt-buildroot)
-- [4. Cấu hình Buildroot](#4-cấu-hình-buildroot)
-- [5. Build hệ thống](#5-build-hệ-thống)
-- [6. Chuẩn bị thẻ SD](#6-chuẩn-bị-thẻ-sd)
-- [7. Boot hệ thống](#7-boot-hệ-thống)
-
-Trong phần này, chúng ta sẽ sử dụng Buildroot để tự động hóa quá trình tạo hệ thống Linux thay vì build từ đầu như các phần trước.
-
-## 2. Build System là gì?
+## 1. Build System là gì?
 
 Build system là công cụ tự động hóa việc biên dịch source code thành binary files. Buildroot tự động build:
 - Linux kernel
@@ -30,7 +19,7 @@ Build system là công cụ tự động hóa việc biên dịch source code th
 
 Điều này giúp tiết kiệm thời gian và giảm lỗi so với việc build thủ công.
 
-## 3. Cài đặt Buildroot
+## 2. Cài đặt Buildroot
 
 Clone Buildroot repository:
 
@@ -40,7 +29,7 @@ cd buildroot
 git checkout 2022.11
 ```
 
-## 4. Cấu hình Buildroot
+## 3. Cấu hình Buildroot
 
 Mở menu cấu hình:
 
@@ -85,7 +74,7 @@ _Menuconfig_
 - Enable **Install U-Boot SPL binary image**
 - U-boot SPL binary image name: **MLO**
 
-## 5. Build hệ thống
+## 4. Build hệ thống
 
 Bắt đầu build (có thể mất 30-60 phút):
 
@@ -100,7 +89,7 @@ Sau khi hoàn thành, các file output sẽ có trong thư mục `output/images/
 - `am335x-boneblack.dtb`
 - `rootfs.tar`
 
-## 6. Chuẩn bị thẻ SD
+## 5. Chuẩn bị thẻ SD
 
 Tạo 2 phân vùng trên thẻ SD bằng [**GParted**](https://gparted.org/):
 - Phân vùng 1: FAT32, 128MB, có boot flag
@@ -133,7 +122,7 @@ Giải nén root filesystem:
 sudo tar -C /media/$USER/rootfs/ -xf output/images/rootfs.tar
 ```
 
-## 7. Boot hệ thống
+## 6. Boot hệ thống
 
 Kết nối serial và khởi động minicom:
 

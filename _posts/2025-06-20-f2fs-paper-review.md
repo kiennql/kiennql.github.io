@@ -2,40 +2,24 @@
 title: "F2FS: Hệ thống tập tin mới cho Flash Storage (Phần 1)"
 author: kiennql
 date: 2025-06-20 09:19:00 +0700
-categories: [paper, kernel]
+categories: [f2fs, paper, kernel]
 tags: [f2fs, flash storage, filesystem, paper review, linux, ssd, nand flash, ftl]
 math: true
 mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Lời nói đầu](#2-lời-nói-đầu)
-- [3. Background: Tại sao cần F2FS?](#3-background-tại-sao-cần-f2fs)
-- [4. Tư tưởng thiết kế và đặc tính chính](#4-tư-tưởng-thiết-kế-và-đặc-tính-chính)
-- [5. Layout](#5-layout)
-- [6. Index structure](#6-index-structure)
-- [7. Multi-head logging](#7-multi-head-logging)
-- [8. Cleaning](#8-cleaning)
-- [9. Adaptive logging](#9-adaptive-logging)
-- [10. Recovery](#10-recovery)
-- [11. Benchmark](#11-benchmark)
-- [12. Tài liệu tham khảo](#12-tài-liệu-tham-khảo)
-
-Bài viết này phân tích paper F2FS - một hệ thống tập tin được thiết kế đặc biệt cho thiết bị flash storage.
-
-## 2. Lời nói đầu
+## 1. Lời nói đầu
 
 Trước tiên, F2FS cũng không phải là hệ thống tập tin mới, đến nay đã hơn 10 năm rồi, nhưng điều đó không cản trở sự phổ biến của nó trong lĩnh vực thiết bị flash. Sau đó, thực ra tôi không thực sự _đọc_ paper, mà là nghe bài thuyết trình của tác giả, cũng không ai quy định paper nhất định phải đọc chữ đúng không.
 
-## 3. Background: Tại sao cần F2FS?
+## 2. Background: Tại sao cần F2FS?
 
 Lý do chính là random write không có lợi cho thiết bị flash. Random write có hiệu suất thấp hơn sequential write là điều thường thức rồi, nhưng còn có một lý do khác là ảnh hưởng đến tuổi thọ thiết bị, điều này được quyết định bởi đặc tính vật lý của flash - nhược điểm cần FTL hoàn thành thao tác erase-before-write, random write chính là khuếch đại nhược điểm này.
 
 Suy nghĩ sâu hơn là cần làm một hệ thống tập tin hướng đến sequential write (có đặc tính wear leveling), và đó chính là F2FS.
 
-## 4. Tư tưởng thiết kế và đặc tính chính
+## 3. Tư tưởng thiết kế và đặc tính chính
 
 - Flash-friendly on-disk layout.
 - Cost-effective index structure.
@@ -43,7 +27,7 @@ Suy nghĩ sâu hơn là cần làm một hệ thống tập tin hướng đến 
 - Adaptive logging.
 - fsync() acceleration with roll-forward recovery.
 
-## 5. Layout
+## 4. Layout
 
 Thế nào mới được coi là bố cục đĩa cứng thân thiện với flash?
 
@@ -82,7 +66,7 @@ Bổ sung một số giải thích về bố cục đĩa cứng, phần sau đâ
 
 Ở đây có một câu hỏi: tại sao cần phân chia ba cấp (zone-section-segment)? Hiểu biết cá nhân của tôi là zone được đưa vào là xem xét đến đơn vị hỗ trợ FTL nhận diện dữ liệu nóng lạnh (xem phần [Multi-head logging](#7-multi-head-logging) bên dưới); còn section thì là một đơn vị được chọn khi GC hệ thống tập tin (performs "cleaning" in the unit of section. …identify a victim selection, xem phần [Cleaning](#8-cleaning) bên dưới); còn segment là đơn vị quản lý cơ bản (allocates storage blocks in the unit of segments), điều này có thể là do F2FS vẫn là hệ thống tập tin thiết bị khối để thích ứng; việc chọn kích thước của cả ba đơn vị này đều cần xem xét đặc điểm phần cứng FTL.
 
-## 6. Index structure
+## 5. Index structure
 
 Tác giả thể hiện ưu thế hiệu quả index của F2FS thông qua so sánh với LFS:
 
@@ -111,13 +95,13 @@ Còn F2FS thì giải quyết từng vấn đề:
 
 Ngoài ra trong chia sẻ [LWN](https://lwn.net/Articles/518988/) thời kỳ đầu cũng đề cập đến tư tưởng phân tách này, tóm lại là nó có hai lợi ích: một là tầng hệ thống tập tin, log đủ lạnh có thể tránh section GC không cần thiết; hai là tầng phần cứng, một thiết bị phần cứng có thể được cấu thành từ nhiều thiết bị con, phân tách (và sau khi điều chỉnh tham số zone hợp lý) có thể nâng cao mức độ song song của IO.
 
-## 7. Multi-head logging
+## 6. Multi-head logging
 
 Ở trên đã đề cập đến tư tưởng phân tách nóng lạnh của Multi-head logging, còn tác giả ở [8:06](https://youtu.be/HgCvcMQnJQ0?t=486) đối với multiple log vẫn có bổ sung, nhưng tôi không nghe rõ thái độ cụ thể của tác giả, có vẻ như đang thảo luận về mối liên hệ giữa việc phân tách nóng lạnh này với FTL ở tầng phần cứng: dù có multiple log, nhưng FTL mapping không thể biết được mối quan hệ này, dù F2FS phân tách nóng lạnh, cuối cùng FTL mapping vẫn trộn lẫn trong cùng một erase block để lưu trữ, hiện tượng node block và data block trộn lẫn này được gọi là zone-blind allocation.
 
 Tác giả giả định F2FS là zone-based mapping, FTL sẽ đặt các log khác nhau vào các khu vực khác nhau. Tôi nghĩ ý nghĩa ở đây là độ chi tiết phân tách dữ liệu phải theo zone để phân chia, như vậy mới tránh được việc FTL mapping sau đó dẫn đến trộn lẫn.
 
-## 8. Cleaning
+## 7. Cleaning
 
 Bí quyết tăng tốc GC là section align theo kích thước đơn vị FTL GC. Nói đơn giản là tránh sự không nhất quán giữa hệ thống tập tin và tầng FTL, thực ra cũng không có gì để nói, hệ thống tập tin sẽ làm GC để dọn dẹp dữ liệu, nhưng FTL có thể sẽ giữ lại, không align thì là hai tầng không phối hợp gây lãng phí hiệu suất.
 
@@ -131,7 +115,7 @@ Quy trình cụ thể như hình, cleaning có thể thực thi ở foreground (
 
 SIT sẽ ghi thời điểm last modified, và giá trị trung bình của thời gian này chính là "tuổi" của một section.
 
-## 9. Adaptive logging
+## 8. Adaptive logging
 
 Còn cleaning sẽ tốn nhiều thời gian hơn khi lão hóa (chiếm dụng cao, nhiều phân mảnh), để giảm chi phí đã đưa vào adaptive logging. Nói cụ thể, là trong các trường hợp khác nhau sử dụng chiến lược ghi khác nhau:
 
@@ -141,7 +125,7 @@ Còn cleaning sẽ tốn nhiều thời gian hơn khi lão hóa (chiếm dụng 
 
 threaded logging là tái sử dụng segment đã ghi, do đó là hành vi random write, nhưng không cần thao tác cleaning; còn append tuy là hành vi sequential write, nhưng khi không gian không đủ vẫn cần cleaning, lúc này sẽ là hành vi random write nghiêm trọng hơn. Đây cũng là lý do tại sao sử dụng chiến lược ghi động.
 
-## 10. Recovery
+## 9. Recovery
 
 ![recovery](/assets/img/post/f2fs-paper/f2fs-recovery.png)
 
@@ -158,7 +142,7 @@ Sau khi cung cấp thông tin cần thiết, để thực hiện recovery là l�
 
 Tuy sử dụng check point để thực hiện `fsync()` là một tư tưởng khả thi, nhưng chi phí là khá cao. Để giảm chi phí thực thi `fsync()`, F2FS còn đưa vào thao tác roll-forward recovery để thay thế thao tác roll-back của check point. Tư tưởng của nó là chỉ update direct node block và data block tương ứng (trong đó direct node block được đánh dấu FSYNC). Khi thực hiện recovery, thông qua block đã đánh dấu để làm lại một lần thao tác ghi.
 
-## 11. Benchmark
+## 10. Benchmark
 
 Phần benchmark chủ yếu so sánh với ext4, kết luận workload sơ bộ như sau:
 
@@ -171,6 +155,6 @@ Ngoài ra tác giả trong bài thuyết trình cũng ám chỉ, F2FS mạnh nh�
 
 Tóm lại, dù bạn dùng code open source có vẻ giống hệt nhau, giữa tự nghiên cứu và không tự nghiên cứu, thực chất tồn tại một bức tường cao.
 
-## 12. Tài liệu tham khảo
+## 11. Tài liệu tham khảo
 
 [FAST '15 - F2FS: A New File System for Flash Storage - YouTube](https://www.youtube.com/watch?v=HgCvcMQnJQ0)

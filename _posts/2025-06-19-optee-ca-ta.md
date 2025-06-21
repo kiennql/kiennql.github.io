@@ -9,29 +9,14 @@ mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Môi trường](#2-môi-trường)
-- [3. Quy trình gọi (Call Flow) phân tích](#3-quy-trình-gọi-call-flow-phân-tích)
-  - [3.1. Tổng quan](#31-tổng-quan)
-  - [3.2. Quy trình làm việc của CA \& TA](#32-quy-trình-làm-việc-của-ca--ta)
-- [4. Phân tích mã nguồn](#4-phân-tích-mã-nguồn)
-  - [4.1. TEEC\_InitializeContext](#41-teec_initializecontext)
-  - [4.2. TEEC\_OpenSession](#42-teec_opensession)
-  - [4.3. TEEC\_InvokeCommand](#43-teec_invokecommand)
-  - [4.4. TEEC\_CloseSession](#44-teec_closesession)
-  - [4.5. TEEC\_FinalizeContext](#45-teec_finalizecontext)
-
-Bài viết này phân tích chi tiết quy trình gọi từ Client Application (CA) đến Trusted Application (TA) trong OP-TEE.
-
-## 2. Môi trường
+## 1. Môi trường
 
 - Ubuntu 22.04
 - ARM Development Studio (ADS) + OP-TEE FVP
 
-## 3. Quy trình gọi (Call Flow) phân tích
+## 2. Quy trình gọi (Call Flow) phân tích
 
-### 3.1. Tổng quan
+### 2.1. Tổng quan
 
 Từ góc độ tổng quan, toàn bộ quy trình gọi từ CA đến TA:
 
@@ -42,7 +27,7 @@ CA → OP-TEE Client → TEE Driver → ATF → TEE → TA
 ![Call Flow Diagram](/assets/img/post/optee-call-flow/image.png)
 _Sơ đồ tổng quan quy trình gọi từ CA đến TA_
 
-### 3.2. Quy trình làm việc của CA & TA
+### 2.2. Quy trình làm việc của CA & TA
 
 **Client Application (CA):**
 
@@ -101,9 +86,9 @@ TEEC_InvokeCommand  → TA_InvokeCommandEntryPoint
 TEEC_CloseSession   → TA_CloseSessionEntryPoint + TA_DestroyEntryPoint
 ```
 
-## 4. Phân tích mã nguồn
+## 3. Phân tích mã nguồn
 
-### 4.1. TEEC_InitializeContext
+### 3.1. TEEC_InitializeContext
 
 Mở TEE driver và chuẩn bị giao tiếp:
 
@@ -115,7 +100,7 @@ TEEC_InitializeContext
 
 Command được sử dụng: `TEE_IOC_VERSION`
 
-### 4.2. TEEC_OpenSession
+### 3.2. TEEC_OpenSession
 
 Quá trình mở session phức tạp nhất, bao gồm việc tải TA:
 
@@ -162,7 +147,7 @@ thread_handle_std_smc
                             └── thread_enter_user_mode // S-EL1 → S-EL0
 ```
 
-### 4.3. TEEC_InvokeCommand
+### 3.3. TEEC_InvokeCommand
 
 Logic tương tự OpenSession, khác biệt ở command:
 
@@ -176,7 +161,7 @@ TEEC_InvokeCommand
 
 Cuối cùng gọi đến `TA_InvokeCommandEntryPoint` trong TA.
 
-### 4.4. TEEC_CloseSession
+### 3.4. TEEC_CloseSession
 
 Đóng session và cleanup:
 
@@ -192,7 +177,7 @@ void TEEC_CloseSession(TEEC_Session *session)
 
 Command: `TEE_IOC_CLOSE_SESSION` → `TA_CloseSessionEntryPoint`
 
-### 4.5. TEEC_FinalizeContext
+### 3.5. TEEC_FinalizeContext
 
 Đóng driver:
 

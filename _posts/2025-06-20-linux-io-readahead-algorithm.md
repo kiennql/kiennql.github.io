@@ -1,39 +1,19 @@
 ---
-title: Thuật toán IO Readahead trong Linux Kernel
+title: "IO: Thuật toán IO Readahead trong nhân Linux (Phần 1)"
 author: kiennql
 date: 2025-06-20 15:56:00 +0700
-categories: [paper]
+categories: [io, paper, kernel]
 tags: [linux kernel, io optimization, readahead, performance, algorithm, file system, vfs, ext4]
 math: true
 mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Giới thiệu](#2-giới-thiệu)
-- [3. Các chiến lược tối ưu IO cơ bản](#3-các-chiến-lược-tối-ưu-io-cơ-bản)
-- [4. Hai loại preread](#4-hai-loại-preread)
-- [5. Hai chiến lược preread heuristic](#5-hai-chiến-lược-preread-heuristic)
-- [6. Độ phức tạp của readahead](#6-độ-phức-tạp-của-readahead)
-- [7. On-demand readahead](#7-on-demand-readahead)
-  - [7.1. Trạng thái readahead](#71-trạng-thái-readahead)
-  - [7.2. Entry point tầng generic](#72-entry-point-tầng-generic)
-  - [7.3. Quy trình đơn giản](#73-quy-trình-đơn-giản)
-  - [7.4. Quy trình tổng thể](#74-quy-trình-tổng-thể)
-- [8. Chi tiết implementation](#8-chi-tiết-implementation)
-  - [8.1. Window khởi tạo và iteration](#81-window-khởi-tạo-và-iteration)
-  - [8.2. Cache hit trong preread](#82-cache-hit-trong-preread)
-  - [8.3. Readahead thrashing](#83-readahead-thrashing)
-  - [8.4. Sequential read phức tạp hơn](#84-sequential-read-phức-tạp-hơn)
-- [9. Tổng kết](#9-tổng-kết)
-- [10. Tài liệu tham khảo](#10-tài-liệu-tham-khảo)
-
-## 2. Giới thiệu
+## 1. Giới thiệu
 
 Chìa khóa tối ưu hóa hiệu suất nằm ở việc giải quyết các bottleneck hiệu suất, và IO luôn là một trong những bottleneck khó giải quyết nhất. Bài viết này chủ yếu dựa trên paper của tác giả thuật toán, mô tả thuật toán on-demand readahead cho các thao tác đọc trong Linux kernel.
 
-## 3. Các chiến lược tối ưu IO cơ bản
+## 2. Các chiến lược tối ưu IO cơ bản
 
 Trước khi bắt đầu nói về thuật toán prefetch, chúng ta cần xem qua các chiến lược tối ưu IO thông thường:
 
@@ -46,7 +26,7 @@ Tuy nhiên, đối với một ứng dụng thông thường, hành vi IO của 
 
 Lý do cần thiết rất đơn giản: thông qua preread để đáp ứng các phương pháp tối ưu 1, 2, 3 ở trên.
 
-## 4. Hai loại preread
+## 3. Hai loại preread
 
 Preread có thể chia thành:
 - **Notification-based preread**
@@ -54,7 +34,7 @@ Preread có thể chia thành:
 
 Notification-based preread cần sự hợp tác của user, như `posix_fadvise`, không bàn ở blog này. Heuristic hoàn toàn transparent với user, khó khăn nằm ở yêu cầu thuật toán cao, cũng là nội dung cụ thể sẽ được giới thiệu sau.
 
-## 5. Hai chiến lược preread heuristic
+## 4. Hai chiến lược preread heuristic
 
 Ngoài direct read, Linux sẽ thực hiện một số chiến lược preread cho read interface:
 - **`readaround`** đại diện bởi `mmap`
@@ -68,7 +48,7 @@ Có thể mô tả quá trình `readaround` trong `mmap` một cách đơn giả
 
 Còn `read-ahead` phức tạp hơn nhiều và khó implement hơn.
 
-## 6. Độ phức tạp của readahead
+## 5. Độ phức tạp của readahead
 
 `readahead` so với `readaround` là nó sẽ tập trung hơn vào hiệu suất sequential read, nhưng cũng cần xem xét tình huống dưới nhiều IO load khác nhau. Vì nó nằm ở tầng `generic read` dưới `VFS`, các interface như `read/pread/readv/sendfile` đều sẽ thống nhất vào `generic read`, tình huống phải đối mặt cũng phức tạp hơn:
 
@@ -78,7 +58,7 @@ Còn `read-ahead` phức tạp hơn nhiều và khó implement hơn.
 
 Để implement `readahead`, cần xử lý các tình huống phức tạp trên.
 
-## 7. On-demand readahead
+## 6. On-demand readahead
 
 Hiện tại kernel cung cấp framework thuật toán on-demand readahead ở generic block layer. Theo nghĩa đen là **readahead theo nhu cầu**.
 
@@ -89,7 +69,7 @@ Tôi nghĩ chia thành 3 module để mô tả toàn bộ framework khá phù h�
 
 *(Lưu ý: Mô tả thuật toán dưới đây dựa trên implementation Linux 4.18.20)*
 
-### 7.1. Trạng thái readahead
+### 6.1. Trạng thái readahead
 
 Cấu trúc dữ liệu `readahead` cần thiết nằm trong `/include/linux/fs.h`:
 
@@ -129,7 +109,7 @@ Theo hình của tác giả để mô tả:
 
 Sau này sẽ mô tả việc thực hiện IO pipeline operation thông qua ahead window.
 
-### 7.2. Entry point tầng generic
+### 6.2. Entry point tầng generic
 
 Lấy `read` / `ext4` làm ví dụ trace, qua:
 
@@ -202,7 +182,7 @@ Có thể thấy, điều kiện vào readahead có hai loại:
 - Không tìm thấy page cache trong radix tree
 - Tìm thấy page cache và page đó được đánh dấu `PG_Readahead`
 
-### 7.3. Quy trình đơn giản
+### 6.3. Quy trình đơn giản
 
 Tôi cố gắng mô tả quá trình readahead của một read request sequential hoàn toàn một cách đơn giản.
 
@@ -252,7 +232,7 @@ Có thể thấy, readahead window là request readahead lần này, cũng là c
 
 Sự tăng trưởng của window thường theo dạng exponential, về sau sẽ tiếp tục thực hiện readahead theo **thiếu page cache** hoặc **trigger marked page**.
 
-### 7.4. Quy trình tổng thể
+### 6.4. Quy trình tổng thể
 
 1. Page cache miss, đi đến bước 3
 2. Hoặc duyệt đến page `PG_readahead`, nếu điều kiện không cho phép thì thoát, ngược lại đi đến bước 3
@@ -388,7 +368,7 @@ readit:
 }
 ```
 
-## 8. Chi tiết implementation
+## 7. Chi tiết implementation
 
 Mặc dù framework tổng thể nhìn đơn giản (nhờ thiết kế tinh tế của tác giả thuật toán), nhưng vẫn có nhiều chi tiết đáng suy ngẫm:
 
@@ -398,7 +378,7 @@ Mặc dù framework tổng thể nhìn đơn giản (nhờ thiết kế tinh t�
 
 Trong đó vấn đề 3 sẽ trực tiếp ảnh hưởng đến chiến lược giải quyết vấn đề 1, 2.
 
-### 8.1. Window khởi tạo và iteration
+### 7.1. Window khởi tạo và iteration
 
 Trước tiên xem vấn đề 3, chiến lược update window. Hai function tương ứng `get_init_ra_size` / `get_next_ra_size`, chúng quyết định kích thước `ra->size`:
 
@@ -447,7 +427,7 @@ static unsigned long get_next_ra_size(struct file_ra_state *ra,
 
 Mục đích thiết kế là đảm bảo chương trình dừng sequential access bất cứ lúc nào cũng có thể đạt được hit rate đáng kể.
 
-### 8.2. Cache hit trong preread
+### 7.2. Cache hit trong preread
 
 Readahead cache hit là hành vi cache hit không cần thiết, vấn đề của nó sẽ giảm throughput của IO.
 
@@ -539,7 +519,7 @@ Chiến lược giải quyết readahead cache hit của on-demand algorithm:
 
 *(Lưu ý: Đối với điểm 1, để tránh hành vi từ chối đánh dấu sai do chỉ có ít cache tồn tại, on-demand algorithm có thể thực hiện nghiêm ngặt hơn - chỉ khi tất cả page đều trigger readahead cache hit mới từ chối set `PG_readahead`, nhưng algorithm không sử dụng chiến lược nghiêm ngặt này)*
 
-### 8.3. Readahead thrashing
+### 7.3. Readahead thrashing
 
 Readahead thrashing xuất phát từ conflict với cơ chế page replacement/reclaim. On-demand readahead algorithm cho rằng readahead thrashing có xác suất cao xảy ra trong large-scale concurrent sequential access load.
 
@@ -553,7 +533,7 @@ Sau khi detect xác nhận, cơ chế bảo vệ readahead thrashing:
 
 Implementation của nó merge với non-aligned behavior trong initial window flow, xem `##flag #3`.
 
-### 8.4. Sequential read phức tạp hơn
+### 7.4. Sequential read phức tạp hơn
 
 Trong trường hợp ứng dụng thông thường, sequential read cũng không phải là tăng trưởng tuyến tính đơn giản:
 
@@ -569,7 +549,7 @@ Chiến lược giải quyết của on-demand readahead algorithm rất đơn g
 
 *(Lưu ý: Cách xử lý interleaved read thực chất là tìm phương án bù đắp cho phương pháp đánh dấu `PG_readahead`)*
 
-## 9. Tổng kết
+## 8. Tổng kết
 
 Bài viết này đại khái đã sắp xếp core flow của thuật toán prefetch, cũng như các giải pháp thiết kế cho corner case khác nhau.
 
@@ -582,7 +562,7 @@ Một khía cạnh khác là tối ưu về mặt thuật toán:
 - **Độ phức tạp không gian**: Chỉ \\(O(1)\\), ít biến duy trì cũng có nghĩa là state transition rõ ràng hơn, tham số pipeline thực chất là `async_size`
 - **Độ phức tạp thời gian**: Là passive processing càng nhiều càng tốt (thú vị là tuy gọi là readahead nhưng không bao giờ tích cực), cũng thông qua cách đánh dấu đơn giản giảm khả năng gọi readahead routine, thậm chí khéo léo tránh được state transition sai. Tôi nghĩ về ý nghĩa engineering cũng có giá trị tham khảo lớn.
 
-## 10. Tài liệu tham khảo
+## 9. Tài liệu tham khảo
 
 Readahead algorithm vẫn còn không ít chi tiết nhỏ có thể khai thác, ví dụ xử lý oversized read, hoặc tìm ra potential sequential read dựa trên historical cache context, v.v. Quan tâm có thể xem paper của tác giả thuật toán Ngô Phong Quang [_Linux 内核中的预取算法_](https://cdmd.cnki.com.cn/Article/CDMD-10358-2009110818.htm), cũng như một số commit message liên quan, random post một vài link để tham khảo:
 

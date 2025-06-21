@@ -9,16 +9,7 @@ mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Tạo Root Filesystem từ đầu](#2-tạo-root-filesystem-từ-đầu)
-- [3. Biên dịch BusyBox](#3-biên-dịch-busybox)
-- [4. Kiểm tra hệ thống](#4-kiểm-tra-hệ-thống)
-- [5. Cấu hình Init System](#5-cấu-hình-init-system)
-
-Trong phần này, chúng ta sẽ hoàn thiện hệ thống Linux tối thiểu cho BeagleBone Black bằng cách tạo Root Filesystem.
-
-## 2. Tạo Root Filesystem từ đầu
+## 1. Tạo Root Filesystem từ đầu
 
 Tạo thư mục staging với cấu trúc filesystem chuẩn:
 
@@ -49,7 +40,7 @@ Kiểm tra cấu trúc với `tree -d`:
     └── log
 ```
 
-## 3. Biên dịch BusyBox
+## 2. Biên dịch BusyBox
 
 Clone BusyBox repository:
 
@@ -85,7 +76,7 @@ Build và install:
 make install
 ```
 
-## 4. Kiểm tra hệ thống
+## 3. Kiểm tra hệ thống
 
 Copy rootfs vào thẻ SD:
 
@@ -108,7 +99,7 @@ bin      etc      lib      proc     sys      usr
 dev      home     linuxrc  sbin     tmp      var
 ```
 
-## 5. Cấu hình Init System
+## 4. Cấu hình Init System
 
 Tạo các file cấu hình init trong thư mục staging:
 

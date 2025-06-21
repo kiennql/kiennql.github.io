@@ -9,15 +9,7 @@ mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Tải source code](#2-tải-source-code)
-- [3. Cross-compile kernel](#3-cross-compile-kernel)
-- [4. Boot kernel](#4-boot-kernel)
-
-Trong phần này, chúng ta sẽ biên dịch và cấu hình Linux kernel để chạy trên BeagleBone Black.
-
-## 2. Tải source code
+## 1. Tải source code
 
 Clone Linux repository:
 
@@ -41,7 +33,7 @@ Checkout phiên bản stable mới nhất:
 git checkout remotes/stable/linux-6.1.y
 ```
 
-## 3. Cross-compile kernel
+## 2. Cross-compile kernel
 
 Thiết lập biến môi trường:
 
@@ -84,7 +76,7 @@ cp arch/arm/boot/zImage /media/$USER/boot/
 cp arch/arm/boot/dts/am335x-boneblack.dtb /media/$USER/boot/
 ```
 
-## 4. Boot kernel
+## 3. Boot kernel
 
 Khởi động minicom:
 

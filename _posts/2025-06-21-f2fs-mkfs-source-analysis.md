@@ -2,35 +2,20 @@
 title: "F2FS: Hiểu về triển khai hệ thống tập tin qua mã nguồn mkfs.f2fs (Phần 2)"
 author: kiennql
 date: 2025-06-21 11:10:00 +0700
-categories: [kernel]
+categories: [f2fs, kernel]
 tags: [f2fs, flash storage, filesystem, mkfs, source code analysis, linux, ssd, nand flash, disk layout]
 math: true
 mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Lời nói đầu](#2-lời-nói-đầu)
-- [3. Tổng quan: Bố cục đĩa cứng](#3-tổng-quan-bố-cục-đĩa-cứng)
-- [4. Khởi tạo Super block](#4-khởi-tạo-super-block)
-- [5. Khởi tạo SIT](#5-khởi-tạo-sit)
-- [6. Khởi tạo NAT](#6-khởi-tạo-nat)
-- [7. Khởi tạo Root directory](#7-khởi-tạo-root-directory)
-- [6. Khởi tạo Check point](#6-khởi-tạo-check-point)
-  - [6.1. Quy trình](#61-quy-trình)
-  - [6.2. Summary block](#62-summary-block)
-  - [6.3. Thông tin debug hỗ trợ](#63-thông-tin-debug-hỗ-trợ)
-  - [6.4. Thuật toán tư duy](#64-thuật-toán-tư-duy)
-- [7. Kết thúc](#7-kết-thúc)
-
-## 2. Lời nói đầu
+## 1. Lời nói đầu
 
 [Bài viết trước](https://kiennql.github.io/posts/f2fs-paper-review/) đã tóm tắt F2FS thông qua việc đọc paper, bài viết này sẽ đi sâu hơn để hiểu F2FS thông qua phân tích mã nguồn. Một mặt chúng ta có thể tìm hiểu F2FS thông qua các [commit đầu tiên](https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs.git/log/?h=dev&qt=grep&q=f2fs&ofs=3700), mặt khác cũng có thể thông qua công cụ [mkfs.f2fs](https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git) của từng giai đoạn để hiểu trạng thái khởi tạo của một hệ thống tập tin. Mặc dù tính ổn định của những đoạn code này so với hiện tại chắc chắn là không đủ, nhưng như vậy vẫn sẽ dễ hiểu hơn các tính năng được đề cập trong paper.
 
 Bài viết này trước tiên sẽ tìm hiểu bố cục đĩa cứng của F2FS đã được format (tức trạng thái khởi tạo của nó), chúng ta sẽ triển khai chi tiết thông qua debug mã nguồn công cụ mkfs.f2fs ngoài kernel.
 
-## 3. Tổng quan: Bố cục đĩa cứng
+## 2. Tổng quan: Bố cục đĩa cứng
 
 ![layout](/assets/img/post/f2fs-mkfs-source-analysis/f2fs-layout.png)
 
@@ -100,7 +85,7 @@ Một số thông tin như sau:
 > area.
 > ```
 
-## 4. Khởi tạo Super block
+## 3. Khởi tạo Super block
 
 Cấu trúc dữ liệu trong `f2fs.h` như sau:
 
@@ -186,7 +171,7 @@ $2 = {
 
 Phần super block khá dễ hiểu, ngoài việc cấu hình thông tin cơ bản về block device block/sector cũng như số lượng segment, còn phản ánh phân chia ba cấp segment-section-zone 1:1:1 mặc định, cũng như địa chỉ bắt đầu của các area (`*_blkaddr`).
 
-## 5. Khởi tạo SIT
+## 4. Khởi tạo SIT
 
 ```c
 /**
@@ -259,13 +244,13 @@ Trong hàm khởi tạo SIT `f2fs_init_sit_area()`, không có thay đổi gì t
 
 Từ dump trước đó có thể thấy `super_block.segment_count_sit = 2`, tức SIT area thực tế sử dụng 2 segment, nhưng ở đây chỉ ghi một nửa (1 segment) vào ngoại vi image, nội dung được ghi đều là số 0 (`zero_buf`).
 
-## 6. Khởi tạo NAT
+## 5. Khởi tạo NAT
 
 Hiện tại hành vi khởi tạo NAT giống với SIT, khác biệt là NAT chiếm 4 segment, các segment khác tương tự.
 
 **Lưu ý:** Trong giai đoạn khởi tạo root directory sau này, NAT vẫn cần thực hiện thêm các thao tác cập nhật cho root inode.
 
-## 7. Khởi tạo Root directory
+## 6. Khởi tạo Root directory
 
 Quy trình tiếp theo thực thi `f2fs_create_root_dir()`, đơn giản có 3 bước:
 
@@ -569,9 +554,9 @@ static int8_t f2fs_add_default_dentry_root(void)
 > 
 > Do đó chọn giá trị 214 là để tối đa hóa tỷ lệ sử dụng dentry block ($\text{reserved} < 19(+1\text{bit}) \text{ bytes}$).
 
-## 6. Khởi tạo Check point
+## 7. Khởi tạo Check point
 
-### 6.1. Quy trình
+### 7.1. Quy trình
 
 Phần khởi tạo check point cũng là một quy trình dài, phần này không chỉ liên quan đến check point mà còn có cấu trúc dữ liệu summary block:
 
@@ -846,7 +831,7 @@ static int8_t f2fs_write_check_point_pack(void)
 }
 ```
 
-### 6.2. Summary block
+### 7.2. Summary block
 
 Summary block trong quy trình ban đầu nhìn khá khó hiểu, cần sắp xếp lại cấu trúc dữ liệu:
 
@@ -938,7 +923,7 @@ Mặc dù cấu trúc dữ liệu không chỉ nhiều mà còn trông phức t�
 - `f2fs_nat_entry/f2fs_sit_entry`: Entry thực tế cần check point ghi lại, tương ứng với cấu trúc dữ liệu của các area khác nhau
 - `summary_footer`: Lưu ở cuối summary block, dùng để phân biệt loại journal và lưu checksum để kiểm tra
 
-### 6.3. Thông tin debug hỗ trợ
+### 7.3. Thông tin debug hỗ trợ
 
 Thông tin debug như sau, đặt breakpoint trước `free()`:
 
@@ -979,12 +964,12 @@ $6 = {
 }
 ```
 
-### 6.4. Thuật toán tư duy
+### 7.4. Thuật toán tư duy
 
 Từ quy trình trước đó và việc ghi lại summary block không đủ để hiểu toàn bộ check point, vì đây chỉ là quá trình khởi tạo. Nhưng có thể thấy rằng checkpoint tồn tại bản sao, và trải rộng trên 2 section, mỗi section có 2 bản sao check point.
 
 Một tư duy thuật toán cơ bản là nếu lần trước ghi vào check point#1, thì lần sau sẽ ghi vào check point#0, điều này sẽ giúp kiểm tra tính nhất quán. Ngoài ra, quá trình recovery có vẻ cũng không bí ẩn gì, mặc dù hiện tại chưa thể biết thuật toán hoàn chỉnh, nhưng những gì làm ở đây chỉ là ghi lại metadata cần thiết, chỉ vậy thôi.
 
-## 7. Kết thúc
+## 8. Kết thúc
 
 Hiện tại đã hiểu đại khái về khung nhìn khởi tạo của F2FS, bài viết tiếp theo sẽ khám phá runtime của F2FS, tạm dừng ở đây.

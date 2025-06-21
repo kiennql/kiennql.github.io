@@ -9,14 +9,7 @@ mermaid: true
 render_with_liquid: false
 ---
 
-## 1. Mục lục
-- [1. Mục lục](#1-mục-lục)
-- [2. Trình tạo Toolchain](#2-trình-tạo-toolchain)
-- [3. Biên dịch crosstool-NG](#3-biên-dịch-crosstool-ng)
-- [4. Tạo toolchain](#4-tạo-toolchain)
-- [5. Xác nhận toolchain hoạt động](#5-xác-nhận-toolchain-hoạt-động)
-
-## 2. Trình tạo Toolchain
+## 1. Trình tạo Toolchain
 
 Crosstool-NG là công cụ tạo **cross-compiling toolchain**.
 
@@ -27,7 +20,7 @@ Toolchain cần một số thành phần đặc biệt:
 * **Linux kernel headers** để hỗ trợ giao tiếp với kernel.
 * Thư viện C phù hợp, trong dự án này là **uClibc** — một thư viện nhỏ gọn, tối ưu cho các hệ thống nhúng.
 
-## 3. Biên dịch crosstool-NG
+## 2. Biên dịch crosstool-NG
 
 Đầu tiên, clone git repository.
 
@@ -51,7 +44,7 @@ Sau khi xử lý xong, bạn có thể biên dịch.
 make
 ```
 
-## 4. Tạo toolchain
+## 3. Tạo toolchain
 
 Bạn có thể xem menu trợ giúp bằng cách nhập:
 
@@ -124,7 +117,7 @@ Log khi build thành công sẽ như thế này:
 
 ![](/assets/img/post/toolchain-bbb/3B20CE99-590F-49DD-9AD4-2E80FEE12852.png)
 
-## 5. Xác nhận toolchain hoạt động
+## 4. Xác nhận toolchain hoạt động
 
 Viết file C đơn giản như này:
 
