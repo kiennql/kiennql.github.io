@@ -180,7 +180,7 @@ Bao gồm các công cụ kiểm tra USB và phân tích giao thức để hỗ 
 
 Giao thức USB hiện tại đã phát triển lên tới USB 3.0. Tuy nhiên, các thiết bị và công nghệ USB phổ biến hiện nay vẫn chủ yếu là USB 2.0. Vì vậy, tài liệu này chủ yếu sẽ giải thích các kiến thức cơ bản về giao thức USB dựa trên USB 2.0.
 
-Về các tiêu chuẩn giao thức USB 2.0 và USB 3.0, bạn có thể tải xuống từ trang web chính thức: [http://www.usb.org/developers/docs/](http://www.usb.org/developers/docs/)
+Về các tiêu chuẩn giao thức USB 2.0 và USB 3.0, bạn có thể tải xuống từ trang web chính thức: [https://www.usb.org/developers/docs/](https://www.usb.org/developers/docs/)
 
 Chỉ riêng tài liệu về tiêu chuẩn USB 2.0 đã có tới 650 trang, và USB 3.0 với 482 trang. Tuy nhiên, phần nội dung liên quan trực tiếp đến giao thức USB chỉ khoảng 97 trang, là những gì chúng ta cần quan tâm.
 
