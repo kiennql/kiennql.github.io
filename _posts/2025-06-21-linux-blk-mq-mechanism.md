@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-21 15:21:00 +0700
 categories: [io, kernel]
 tags: [linux, kernel, blk-mq, block-io, multi-queue, storage, nvme, performance]
+description: "Phân tích cơ chế blk-mq multi-queue trong Linux kernel, từ kiến trúc framework đến luồng xử lý IO cho thiết bị NVMe."
 math: true
 mermaid: true
 render_with_liquid: false

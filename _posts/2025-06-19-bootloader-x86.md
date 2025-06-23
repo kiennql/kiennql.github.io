@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-19 13:39:00 +0700
 categories: [bootloader-labs]
 tags: [bootloader, x86, assembly, nasm, qemu, bios, boot process, low-level programming]
+description: "Viết bootloader đầu tiên cho kiến trúc x86 với assembly NASM, hiểu quá trình boot từ BIOS và test trên QEMU."
 math: true
 mermaid: true
 render_with_liquid: false

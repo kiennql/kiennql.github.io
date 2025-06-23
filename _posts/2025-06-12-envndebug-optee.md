@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-12 16:34:00 +0700
 categories: [optee-labs]
 tags: [op-tee, arm trustzone, secure world, qemu, debugging, gdb, cross-compile, arm, repo, gdb-multiarch, embedded linux]
+description: "Thiết lập môi trường OP-TEE trên QEMU ARM v8, cấu hình debug với GDB và phân tích quá trình boot ARM TrustZone."
 math: true
 mermaid: true
 render_with_liquid: false

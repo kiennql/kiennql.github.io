@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-10 23:39:00 +0700
 categories: [bbb-labs]
 tags: [beaglebone black, embedded linux, root filesystem, busybox, cross-compile, arm]
+description: "Tạo root filesystem cho BeagleBone Black từ đầu với BusyBox, cấu hình init system và hoàn thiện hệ thống Linux tối thiểu."
 math: true
 mermaid: true
 render_with_liquid: false

@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-20 09:19:00 +0700
 categories: [f2fs, paper, kernel]
 tags: [f2fs, flash storage, filesystem, paper review, linux, ssd, nand flash, ftl]
+description: "Review paper F2FS - hệ thống tập tin tối ưu cho flash storage, phân tích thiết kế multi-head logging và adaptive logging."
 math: true
 mermaid: true
 render_with_liquid: false

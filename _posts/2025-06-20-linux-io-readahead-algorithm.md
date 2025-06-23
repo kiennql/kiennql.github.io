@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-20 15:56:00 +0700
 categories: [io, paper, kernel]
 tags: [linux kernel, io optimization, readahead, performance, algorithm, file system, vfs, ext4]
+description: "Phân tích thuật toán on-demand readahead trong Linux kernel, tối ưu hiệu suất IO với sequential access và cache management."
 math: true
 mermaid: true
 render_with_liquid: false

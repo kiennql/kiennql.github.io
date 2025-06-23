@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-21 11:10:00 +0700
 categories: [f2fs, kernel]
 tags: [f2fs, flash storage, filesystem, mkfs, source code analysis, linux, ssd, nand flash, disk layout]
+description: "Phân tích mã nguồn mkfs.f2fs để hiểu bố cục đĩa cứng F2FS, khởi tạo SIT/NAT và quá trình tạo filesystem."
 math: true
 mermaid: true
 render_with_liquid: false

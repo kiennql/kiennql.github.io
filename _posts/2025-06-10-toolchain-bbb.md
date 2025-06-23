@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-10 0:33:00 +0700
 categories: [bbb-labs]
 tags: [beaglebone black, embedded linux, crosstool-ng, uclibc, toolchain, arm, cross-compile]
+description: "Tạo cross-compiling toolchain cho BeagleBone Black bằng crosstool-NG và uClibc."
 math: true
 mermaid: true
 render_with_liquid: false

@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-19 14:32:00 +0700
 categories: [optee-labs]
 tags: [op-tee, arm trustzone, call flow, debugging, ca, ta, smc, atf, secure world, analysis]
+description: "Phân tích chi tiết quy trình gọi từ Client Application đến Trusted Application trong OP-TEE, từ TEE driver đến ATF."
 math: true
 mermaid: true
 render_with_liquid: false

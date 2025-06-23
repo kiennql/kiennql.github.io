@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-10 23:23:00 +0700
 categories: [bbb-labs]
 tags: [beaglebone black, embedded linux, linux kernel, cross-compile, arm]
+description: "Cross-compile và porting Linux kernel cho BeagleBone Black, cấu hình ARM cross-compile và boot kernel từ U-Boot."
 math: true
 mermaid: true
 render_with_liquid: false

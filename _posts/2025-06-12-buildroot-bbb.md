@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-12 08:47:00 +0700
 categories: [bbb-labs]
 tags: [beaglebone black, embedded linux, buildroot, build system, cross-compile, arm]
+description: "Tạo hệ thống Linux tối thiểu cho BeagleBone Black bằng Buildroot, tự động hóa build kernel, U-Boot và rootfs."
 math: true
 mermaid: true
 render_with_liquid: false

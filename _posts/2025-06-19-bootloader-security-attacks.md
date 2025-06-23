@@ -4,6 +4,7 @@ author: kiennql
 date: 2025-06-19 14:14:00 +0700
 categories: [bootloader-labs]
 tags: [bootloader, security, u-boot, embedded security, penetration testing, backdoor, tftp, kernel module, kernel, secure boot]
+description: "Phân tích các lỗ hổng bảo mật bootloader, kỹ thuật tấn công qua TFTP và cài đặt backdoor, kèm giải pháp secure boot."
 math: true
 mermaid: true
 render_with_liquid: false
