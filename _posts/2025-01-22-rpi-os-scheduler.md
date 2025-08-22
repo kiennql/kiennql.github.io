@@ -2,7 +2,7 @@
 title: "LFS: Bộ lập lịch - Scheduler (Phần 4)"
 author: kiennql
 date: 2025-08-22 10:30:00 +0700
-categories: [pi-labs]
+categories: [pi-labs, lfs]
 tags: [scheduler, raspberry-pi, linux kernel, arm, lfs]
 description: "Hướng dẫn triển khai bộ lập lịch (scheduler) trong RPi OS - từ task_struct, thuật toán scheduling đến context switch và quản lý bộ nhớ."
 math: true
