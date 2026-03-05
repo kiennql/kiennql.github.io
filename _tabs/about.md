@@ -4,7 +4,7 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-Tôi là Kiên, Kỹ sư Phần mềm Hệ điều hành tại [VinFast](https://vinfast.com/).
+Tôi là Kiên, Senior Embedded Software Engineer tại [VinFast](https://vinfast.com/).
 
 Tôi tốt nghiệp [Đại học Bách Khoa Hà Nội](https://hust.edu.vn/),  có kinh nghiệm phát triển Android, Linux Kernel và đặc biệt đam mê các dự án mã nguồn mở. Tôi luôn chủ động học hỏi, nhanh chóng tiếp cận công nghệ mới và ứng dụng hiệu quả vào công việc thực tế.
 
